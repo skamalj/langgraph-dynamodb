@@ -3,17 +3,18 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "langgraph_dynamodb_checkpoint"
-version = "0.1.3"
-description = "DynamoDB checkpoint saver implementation for LangGraph"
-authors = [{name = "Kamaal", email = "skamalj@github.com"}]
+name = "langgraph_store_dynamodb"
+version = "0.1.2"
+description = "DynamoDB dtore for LangGraph"
+authors = [{name = "Kamal", email = "skamalj@github.com"}]
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "langchain-core",
     "langgraph",
     "boto3",
-    "botocore"
+    "botocore",
+    "aioboto3"
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -31,7 +32,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/langgraph_dynamodb_checkpoint"]
+packages = ["src/langgraph_store_dynamodb"]
 
 [tool.black]
 line-length = 88

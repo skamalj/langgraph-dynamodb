@@ -1,22 +1,21 @@
-# LangGraph DynamoDB Checkpoint Saver
+# LangGraph DynamoDB Store
 
-A DynamoDB-based checkpoint saver implementation for LangGraph that allows storing and managing checkpoints in Amazon DynamoDB.
+A DynamoDB-based store implementation for LangGraph that allows long term memory implementation.
 
-## Installation
+This implements both sync and async methods for [BaseStore](https://langchain-ai.github.io/langgraph/reference/store/#langgraph.store.base.BaseStore)
 
 bash
-pip install langgraph_dynamodb_checkpoint
-
+pip install langgraph-store-dynamodb
 
 ## Usage
 
 ### Basic Initialization
 
 python
-from langgraph_dynamodb_checkpoint import DynamoDBSaver
+from langgraph_store_dynamodb import DynamoDBStore
 
-# Initialize the saver with a table name
-saver = DynamoDBSaver(
+# Initialize the store with a table name
+store = DynamoDBStore(
     table_name="your-dynamodb-table-name",
     max_read_request_units=10,  # Optional, default is 10
     max_write_request_units=10  # Optional, default is 10
@@ -25,17 +24,17 @@ saver = DynamoDBSaver(
 
 ### Alternative Initialization Using Context Manager
 
-python
-from langgraph_dynamodb_checkpoint import DynamoDBSaver
+```
+from langgraph_dynamodb_checkpoint import DynamoDBStore
 
-with DynamoDBSaver.from_conn_info(table_name="your-dynamodb-table-name") as saver:
-    # Use the saver here
-    pass
+with DynamoDBStore.from_conn_info(table_name="your-dynamodb-table-name") as store:
+    # Use the store here
+```
 
 
 ## Parameters
 
-### DynamoDBSaver Constructor
+### DynamoDBStore Constructor
 
 - `table_name` (str): Name of the DynamoDB table to use for storing checkpoints
 - `max_read_request_units` (int, optional): Maximum read request units for the DynamoDB table. Defaults to 10
@@ -43,10 +42,10 @@ with DynamoDBSaver.from_conn_info(table_name="your-dynamodb-table-name") as save
 
 ## Table Structure
 
-The saver automatically creates a DynamoDB table if it doesn't exist, with the following structure:
+The store automatically creates a DynamoDB table if it doesn't exist, with the following structure:
 
-- Partition Key (PK): String type, used for thread_id
-- Sort Key (SK): String type, used for checkpoint_id
+- Partition Key (PK): String type, used for namespace
+- Sort Key (SK): String type, used for memory key
 
 ## AWS Configuration
 
@@ -61,6 +60,6 @@ The AWS credentials should have permissions to:
 
 ## Notes
 
-- The saver automatically creates the DynamoDB table if it doesn't exist
+- The store automatically creates the DynamoDB table if it doesn't exist
 - Uses on-demand billing mode for DynamoDB
-- Implements all methods required by the LangGraph BaseCheckpointSaver interface
+- Implements methods required by the LangGraph BaseStore interface
